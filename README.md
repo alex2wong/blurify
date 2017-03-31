@@ -5,7 +5,9 @@ I have add partial blur function to the origin repo. check [Demo](https://alex2w
 
 ## Demo
 
-[Demo](https://alex2wong.github.io/blurify/)
+[Demo](https://alex2wong.github.io/blurify/)<br>
+**↓Demo ScreenShot, partially blur**
+![ScreenShot](https://github.com/alex2wong/blurify/blob/master/test/screenshot.jpg?raw=true)
 
 ## Usage
 
@@ -19,7 +21,7 @@ blurify the images with given `options`:
     - `css`: use `filter` property.
     - `canvas`: use `canvas` export base64. (`default`)
     - `auto`: use `css` mode firstly, otherwise switch to `canvas` mode by automatically.
-- `ratio`: {Float}, ratio of image to blur, set 0.2 to blur top 20% and bottom 20%.
+- `ratio`: {Float}, ratio of image to blur, set 0.2 to blur top 20% and bottom 20%, set 1 to blur whole image.
 - `ele`: {Canvas}, canvas to render blured image.
 
 ```js
