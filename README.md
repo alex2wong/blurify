@@ -1,19 +1,11 @@
 # blurify
 
-[![dependencies](https://david-dm.org/justclear/blurify.svg)](https://david-dm.org/justclear/blurify#info=dependencies&view=table)
-[![devDependencies](https://david-dm.org/justclear/blurify/dev-status.svg)](https://david-dm.org/justclear/blurify#info=devDependencies&view=table)
-
 blurify.js is a tiny(~2kb) library to blurred pictures, support graceful downgrade from `css` mode to `canvas` mode.
-
-## Installation
-
-```sh
-$ npm i blurify
-```
+I have add partial blur function to the origin repo. check [Demo](https://alex2wong.github.io/blurify/)
 
 ## Demo
 
-[Demo](https://justclear.github.io/blurify/)
+[Demo](https://alex2wong.github.io/blurify/)
 
 ## Usage
 
@@ -21,20 +13,27 @@ $ npm i blurify
 
 blurify the images with given `options`:
 
-- `images` { Element }, blurify target elements.
+- `image` { Element }, target image object to blurify.
 - `blur` { Int }, extent of blur, defaulting to `6`.
 - `mode` { String }, mode of blurify.
-    - `css`: use `filter` property.(`default`)
-    - `canvas`: use `canvas` export base64.
+    - `css`: use `filter` property.
+    - `canvas`: use `canvas` export base64. (`default`)
     - `auto`: use `css` mode firstly, otherwise switch to `canvas` mode by automatically.
+- `ratio`: {Float}, ratio of image to blur, set 0.2 to blur top 20% and bottom 20%.
+- `ele`: {Canvas}, canvas to render blured image.
 
 ```js
-import blurify from 'blurify';
 
+img = new Image();
+img.src = "./test/4.jpg";
 new blurify({
-    images: document.querySelectorAll('.blurify'),
-    blur: 6,
-    mode: 'css',
+    image: img,
+    ele: document.querySelector('#canv'),
+    blur: 2,
+    mode: 'auto',
+    ratio: 0.3,
+    blurStep: 1,
+    blurOffset: 1
 });
 ```
 
