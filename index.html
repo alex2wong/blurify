@@ -5,27 +5,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>blurify</title>
-    <style>
-        img {
-            width: 100%;
-        }
-    </style>
 </head>
+<style>
+    .button {
+        display: inline-block;
+        margin: 5px;
+        width: 110px;
+        padding: 8px 8px 10px;
+        text-align: center;
+        vertical-align: middle;
+        border-radius: 3px;
+        color: #666;
+        background: rgba(158, 158, 158, 0.36);
+    }
+    .button:hover {
+        cursor: pointer;
+        transition: background 0.4s;
+        background: rgba(158, 158, 158, 0.76);
+        color: #eee;
+    }
+    input {
+        height: 30px;
+        margin: 5px;
+        font-weight: bold;
+        font-size: 15px;
+    }
+</style>
 <body>
-    <div class="blurify-container">
+    <!--<div class="blurify-container">
         <img data-src="./test/1.jpg" class="blurify">
         <img data-src="./test/2.jpg" class="blurify">
+    </div>-->
+    <canvas id="canv"></canvas>
+    <div class="control-panel">
+        <label for="blur">Blur Pixel</label>
+        <input type="text" name="blur" id="blur" min="0" max="4" value="2" onchange="onChange()"> 
+        <label for="ratio">Blur Ratio</label>
+        <input type="text" name="ratio" id="ratio" step="0.1" value="0.3" min="0" max="0.5" onchange="onChange()"><br>
+        <label for="blurStep">Blur Step</label>
+        <input type="text" name="blurStep" id="blurStep" min="0" max="4" value="1" onchange="onChange()">
+        <label for="blurOffset">Blur Offset</label>
+        <input type="text" name="blurOffset" id="blurOffset" min="0" max="4" value="1" onchange="onChange()"><br>
+        <p>Set BlurStep as <b>1/2</b> of Blur Pixel to get better blur effect. </p>
+        <p>Set BlurRatio as <b>0.1~0.3</b> to blur top and bottom part, set <b>1</b> to blur whole image</p>
+        <div class="button" onclick="toggleBlur()"><span>Toggle Blur</span></div>
+        <div class="button" onclick="onBlur()">
+            <span>Blur It!</span>
+        </div>
+        <div class="button" onclick="nextPic()">
+            <span>Next Image</span>
+        </div>
     </div>
-
-    <script src="dist/blurify.js"></script>
+    <script src="src/index.js">
+    </script>
     <script>
-        (function () {
-            new blurify({
-                images: document.querySelectorAll('.blurify'),
-                blur: 6,
-                mode: 'auto',
-            });
+        var blurControl, 
+            blured = true, 
+            img = new Image();
+            img.src = "./test/4.jpg";
+            imgId = 4;
+
+        (function () { 
+            img.onload = function() {
+                blurControl = new blurify({
+                    image: img,
+                    ele: document.querySelector('#canv'),
+                    blur: 2,
+                    mode: 'auto',
+                    ratio: 0.3,
+                    blurStep: 1,
+                    blurOffset: 1
+                });
+            }
         })();
+
+        function toggleBlur() {
+            if (blured) {
+                blurControl.drawImage();
+                blured = false;
+            } else {
+                blurControl.blurCanvas();
+                blured = true;
+            }
+        }
+
+        function onBlur() {
+            // get latest Config.
+            blurVal = parseInt(document.querySelector('#blur').value);
+            ratioVal = parseFloat(document.querySelector('#ratio').value);
+            blurStepVal = parseInt(document.querySelector('#blurStep').value);
+            blurOffsetVal = parseInt(document.querySelector('#blurOffset').value);
+
+            blurControl.drawImage();
+            blurControl = new blurify({
+                    image: img,
+                    ele: document.querySelector('#canv'),
+                    blur: blurVal,
+                    mode: 'auto',
+                    ratio: ratioVal,
+                    blurStep: blurStepVal,
+                    blurOffset: blurOffsetVal
+                });
+            console.warn("Blured completed !!");
+            blured = true;
+        }
+
+        function onChange(){            
+            onBlur();
+        }
+
+        function nextPic() {
+            if (imgId && imgId < 7 && imgId > 2) {
+                imgId += 1;
+                img.src = "./test/"+ imgId +".jpg";
+            } else {
+                imgId = 3;
+                img.src = "./test/"+ imgId +".jpg";
+            }
+            img.onload = function(){
+                onBlur();
+            } 
+        }
+
     </script>
 </body>
 </html>
